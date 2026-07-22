@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  requirements.txt  —  All dependencies for Phase 1 + Phase 2 + Phase 4
+# ─────────────────────────────────────────────────────────────────────────────
+#
+#  Versions pinned to exact versions from the tested virtual environment
+#  (venv created on Windows, Python 3.x).  Pinning prevents dependency drift
+#  between the development machine and the evaluator's machine.
+#
+#  Install everything with:
+#      pip install -r requirements.txt
+#
+#  External services required (NOT pip-installable):
+#    • Qdrant   → docker run -p 6333:6333 qdrant/qdrant
+#    • Ollama   → https://ollama.com  then:
+#                   ollama pull nomic-embed-text
+#                   ollama pull llama3:8b
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Phase 1: Raw artifact parsing ─────────────────────────────────────────────
+python-evtx==0.8.1         # Parse Windows Event Log .evtx files
+dpkt==1.9.8                # Parse network captures .pcap / .pcapng
+tqdm==4.68.2               # Progress bars in terminal
+
+# ── Phase 2: RAG pipeline ─────────────────────────────────────────────────────
+ollama==0.6.2              # Ollama Python client (embeddings + chat)
+qdrant-client==1.18.0      # Qdrant vector database client
+rank-bm25==0.2.2           # BM25 sparse retrieval (pure Python, no extra deps)
+fpdf2==2.8.3               # PDF export for Phase 4 report (pure Python, no external binaries)
+# Note: concurrent.futures (used by embed_batch) is stdlib — no pip install needed
+
+# ── Transitive dependencies (pinned for reproducibility) ──────────────────────
+annotated-types==0.7.0
+anyio==4.13.0
+certifi==2026.5.20
+colorama==0.4.6
+grpcio==1.81.1
+h11==0.16.0
+h2==4.3.0
+hexdump==3.3
+hpack==4.2.0
+httpcore==1.0.9
+httpx==0.28.1
+hyperframe==6.1.0
+idna==3.18
+numpy==2.5.0
+portalocker==3.2.0
+protobuf==7.35.1
+pydantic==2.13.4
+pydantic_core==2.46.4
+pywin32==312
+typing_extensions==4.15.0
+typing-inspection==0.4.2
+urllib3==2.7.0

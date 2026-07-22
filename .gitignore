@@ -1,0 +1,8 @@
+bm25_cache.pkl
+embed_checkpoint.pkl
+__pycache__/
+*.pyc
+forensic_audit.log
+parser_errors.log
+sample_data/
+output/
