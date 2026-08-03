@@ -1,4 +1,5 @@
-# Aeternus Forensis — AI-Powered Forensic Investigation Pipeline
+# LLM-Based Forensic Q&A and Report Generation
+
 
 A local, citation-enforced RAG system for digital forensic investigation. It ingests raw forensic artifacts (Windows Event Logs, packet captures, CSV/syslog exports), indexes them with hybrid dense \+ sparse retrieval, and lets an investigator ask natural-language questions and get answers that trace back to real, cited log entries — not hallucinated summaries.
 
