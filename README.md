@@ -251,9 +251,6 @@ These are documented in the code, not hidden:
 
 ---
 
-## License
-
-MIT — see [LICENSE](http://LICENSE).
 
 ---
 
