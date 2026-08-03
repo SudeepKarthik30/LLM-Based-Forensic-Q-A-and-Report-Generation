@@ -1,0 +1,448 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   AETERNUS FORENSIS — Evidence Terminal Theme
+   Design system: forensic evidence terminal, not a chatbot skin.
+   Every "claim" the UI makes (confidence, status, citations) is rendered
+   as a die-cut evidence tag — dashed edge + corner-fold shadow — so the
+   visual language reinforces the product's actual guarantee: nothing is
+   asserted without a tag pointing back to a source.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg:            #0A0D0C;
+  --surface:       #121613;
+  --surface-raised:#161B17;
+  --line:          #232B26;
+  --line-soft:     #1A201C;
+  --ink:           #E9E6DC;
+  --ink-soft:      #8B9490;
+  --ink-faint:     #5C6460;
+  --accent:        #3FA88C;
+  --accent-dim:    #2C7A65;
+  --accent-amber:  #C9A227;
+  --danger:        #C1453A;
+  --danger-dim:    #8A332B;
+
+  --display: 'Newsreader', Georgia, serif;
+  --body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:    'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --radius:   3px;
+  --radius-lg:5px;
+}
+
+/* ── App shell ─────────────────────────────────────────────────────── */
+
+.stApp {
+  background:
+    radial-gradient(ellipse 1200px 600px at 50% -10%, #0F1613 0%, var(--bg) 60%);
+  color: var(--ink);
+  font-family: var(--body);
+}
+
+.stApp, .stApp * { border-color: var(--line); }
+
+/* Kill default Streamlit padding bloat so panels feel dense/purposeful */
+.block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 1180px; }
+
+h1, h2, h3 { font-family: var(--body); color: var(--ink); letter-spacing: -0.01em; }
+p, span, div, label { color: var(--ink); }
+::selection { background: var(--accent); color: #06110D; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ── Top nav (landing page) ───────────────────────────────────────── */
+
+.af-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 4px 22px; border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+.af-brand {
+  font-family: var(--display); font-weight: 600; font-size: 1.15rem;
+  letter-spacing: 0.06em; color: var(--ink);
+}
+.af-brand::before { content: "⚖ "; color: var(--accent); }
+.af-navlinks { display: flex; gap: 28px; }
+.af-navlinks span {
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-soft); cursor: default;
+}
+.af-navver {
+  font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint);
+  border: 1px solid var(--line); padding: 3px 8px; border-radius: var(--radius);
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────── */
+
+.af-hero { padding: 56px 0 40px; max-width: 760px; }
+.af-hero h1 {
+  font-family: var(--display); font-weight: 500; font-size: 2.6rem;
+  line-height: 1.15; color: var(--ink); margin: 0 0 20px;
+  letter-spacing: -0.01em;
+}
+.af-hero p {
+  font-size: 1.02rem; line-height: 1.65; color: var(--ink-soft);
+  max-width: 620px; margin: 0;
+}
+
+/* ── Chips (capability strip) ─────────────────────────────────────── */
+
+.af-chip {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px 16px;
+  position: relative; overflow: hidden;
+}
+.af-chip::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--accent);
+}
+.af-chip .t {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  color: var(--ink-soft); text-transform: uppercase;
+}
+
+/* ── Panels (the primary content container everywhere) ───────────── */
+
+.af-panel {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg); padding: 20px 22px; margin: 10px 0;
+}
+.af-label {
+  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--accent); font-weight: 600;
+}
+.af-mono { font-family: var(--mono); }
+
+/* ── Evidence-tag badges (the signature element) ──────────────────── */
+/* Dashed left edge = "torn from a larger record"; corner shadow = die-cut
+   tag pinned to the page. Used for every status/confidence assertion. */
+
+.af-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 5px 11px 5px 9px;
+  border-left: 2px dashed currentColor;
+  background: var(--surface-raised);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  box-shadow: 2px 2px 0 0 rgba(0,0,0,0.35);
+  position: relative; top: -1px;
+}
+.af-badge.ok    { color: var(--accent);        border-color: var(--accent); }
+.af-badge.warn  { color: var(--accent-amber);  border-color: var(--accent-amber); }
+.af-badge.bad   { color: var(--danger);        border-color: var(--danger); }
+
+/* ── Citation inline tags ─────────────────────────────────────────── */
+
+.af-cite {
+  font-family: var(--mono); font-size: 0.78rem; color: var(--accent);
+  background: rgba(63,168,140,0.1); padding: 1px 6px; border-radius: 2px;
+  border: 1px solid rgba(63,168,140,0.3);
+}
+.af-cite-bad {
+  font-family: var(--mono); font-size: 0.78rem; color: var(--danger);
+  background: rgba(193,69,58,0.1); padding: 1px 6px; border-radius: 2px;
+  border: 1px solid rgba(193,69,58,0.35);
+}
+
+/* ── Finding card (the answer to a forensic question) ─────────────── */
+
+.af-finding {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 18px 20px; margin: 14px 0;
+}
+.af-finding h4 {
+  font-family: var(--display); font-weight: 500; font-size: 1.15rem;
+  color: var(--ink); margin: 0 0 10px; font-style: italic;
+}
+.af-finding > div:last-child {
+  font-size: 0.94rem; line-height: 1.7; color: var(--ink-soft);
+}
+
+/* ── Evidence source header row ────────────────────────────────────── */
+
+.af-ev-head {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 0.74rem; color: var(--ink-faint);
+  padding: 6px 0; border-bottom: 1px dashed var(--line); margin-bottom: 6px;
+}
+.af-ev-head span:first-child { color: var(--ink-soft); }
+
+/* ── Sidebar (case docket) ────────────────────────────────────────── */
+
+section[data-testid="stSidebar"] {
+  background: #090C0A; border-right: 1px solid var(--line);
+}
+section[data-testid="stSidebar"] .block-container { padding-top: 1.6rem; }
+
+.af-sb-head, .af-sb-title {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent); font-weight: 600;
+}
+
+section[data-testid="stSidebar"] hr { border-color: var(--line); margin: 14px 0; }
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+
+.stButton > button {
+  font-family: var(--body); font-weight: 600; font-size: 0.85rem;
+  border-radius: var(--radius); border: 1px solid var(--line);
+  background: var(--surface-raised); color: var(--ink);
+  transition: all 0.12s ease;
+}
+.stButton > button:hover {
+  border-color: var(--accent); color: var(--accent);
+  background: rgba(63,168,140,0.08);
+}
+.stButton > button[kind="primary"] {
+  background: var(--accent); color: #06110D; border: 1px solid var(--accent);
+}
+.stButton > button[kind="primary"]:hover {
+  background: var(--accent-dim); color: #06110D;
+}
+
+/* ── Metrics (top strip: EVENTS INDEXED, etc.) ────────────────────── */
+
+div[data-testid="stMetric"] {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 12px 16px;
+}
+div[data-testid="stMetricLabel"] {
+  font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.07em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+div[data-testid="stMetricValue"] {
+  font-family: var(--display); font-size: 1.6rem; color: var(--ink);
+}
+
+/* ── Inputs ────────────────────────────────────────────────────────── */
+
+.stTextInput input, .stSelectbox div[data-baseweb="select"] > div,
+.stNumberInput input, textarea {
+  background: var(--surface) !important; border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important; color: var(--ink) !important;
+  font-family: var(--mono) !important; font-size: 0.85rem !important;
+}
+.stTextInput input:focus, textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent) !important;
+}
+
+.stSlider [data-baseweb="slider"] { padding-top: 6px; }
+.stSlider div[role="slider"] { background: var(--accent) !important; }
+
+.stRadio label, .stCheckbox label { font-size: 0.88rem; color: var(--ink-soft); }
+
+/* ── Chat input ────────────────────────────────────────────────────── */
+
+div[data-testid="stChatInput"] {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+div[data-testid="stChatInput"] textarea { font-family: var(--body) !important; }
+
+/* ── File uploader ─────────────────────────────────────────────────── */
+
+.stFileUploader section {
+  background: var(--surface); border: 1px dashed var(--line);
+  border-radius: var(--radius-lg);
+}
+.stFileUploader section:hover { border-color: var(--accent); }
+
+/* ── Expander (Source Evidence) ───────────────────────────────────── */
+
+div[data-testid="stExpander"] {
+  background: var(--surface); border: 1px solid var(--line) !important;
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+div[data-testid="stExpander"] summary {
+  font-family: var(--mono); font-size: 0.82rem; color: var(--ink-soft);
+}
+
+/* ── Status widget (pipeline steps ①-⑥) ───────────────────────────── */
+
+div[data-testid="stStatusWidget"], div[data-testid="stExpander"] {
+  font-family: var(--mono);
+}
+div[data-testid="stStatusWidget"] p { font-size: 0.85rem; color: var(--ink-soft); }
+
+/* ── Code blocks (evidence snippets) ──────────────────────────────── */
+
+.stCodeBlock, pre {
+  background: #080B09 !important; border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+}
+code { font-family: var(--mono) !important; font-size: 0.8rem !important; color: var(--accent) !important; }
+
+/* ── Alerts ────────────────────────────────────────────────────────── */
+
+.stAlert {
+  border-radius: var(--radius) !important; border: 1px solid var(--line) !important;
+  font-family: var(--body) !important;
+}
+
+/* ── Dividers ──────────────────────────────────────────────────────── */
+
+hr { border-color: var(--line) !important; }
+
+/* ── Tables / dataframes ──────────────────────────────────────────── */
+
+.stDataFrame { border: 1px solid var(--line); border-radius: var(--radius); }
+
+/* ── Section nav (INVESTIGATE / INGEST / SETTINGS / REPORT) ──────── */
+/* These render as stButton columns — give the active one a tag-like
+   underline instead of a full color fill, so it reads as "selected
+   record" not "marketing tab". */
+
+div[data-testid="column"] .stButton > button {
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom: 2px solid transparent;
+}
+div[data-testid="column"] .stButton > button[kind="primary"] {
+  background: var(--surface-raised); color: var(--accent);
+  border: 1px solid var(--line); border-bottom: 2px solid var(--accent);
+}
+
+/* ── Focus visibility (accessibility floor) ───────────────────────── */
+
+button:focus-visible, input:focus-visible, textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+
+/* ── Reduced motion respected ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .af-hero h1 { font-size: 1.9rem; }
+  .af-nav { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .af-navlinks { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ROUND 2 — layout fixes: header, centering, balance, live status, chat
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Hide Streamlit's native top toolbar (the extra dark-blue bar) ──── */
+
+header[data-testid="stHeader"] { display: none !important; }
+div[data-testid="stToolbar"]   { display: none !important; }
+.block-container { padding-top: 1.4rem !important; }
+
+/* ── Hero: center it ───────────────────────────────────────────────── */
+
+.af-hero {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 780px;
+}
+.af-hero p { margin: 0 auto; }
+
+.af-nav { justify-content: center; position: relative; }
+.af-nav .af-brand { position: absolute; left: 4px; }
+.af-nav .af-navver { position: absolute; right: 4px; }
+
+/* ── Balance the two landing panels (Capstone / System Status) ──────── */
+
+.af-panel { height: 100%; box-sizing: border-box; }
+div[data-testid="stHorizontalBlock"] { align-items: stretch; }
+
+/* ── Native bordered containers (metrics section, forms) ─────────────
+   Streamlit's st.container(border=True) renders this test-id; themeing
+   it keeps the "separate section" feel consistent with .af-panel. ──── */
+
+div[data-testid="stVerticalBlockBorderWrapper"] {
+  background: var(--surface) !important;
+  border-color: var(--line) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+/* ── Chat input: medium width, centered, hover feedback ──────────────
+   Applies to both the pinned-bottom st.chat_input and the pre-chat
+   centered form — same visual language, different position. ────────── */
+
+div[data-testid="stChatInput"] {
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: 999px !important;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+div[data-testid="stChatInput"]:hover,
+div[data-testid="stChatInput"]:focus-within {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px rgba(63,168,140,0.28);
+}
+div[data-testid="stChatInput"] textarea {
+  padding-left: 4px !important;
+}
+
+/* Pre-chat centered search (custom form, mirrors chat_input styling) */
+
+.af-centered-wrap {
+  max-width: 700px;
+  margin: 64px auto 28px;
+  text-align: center;
+}
+.af-centered-heading {
+  font-family: var(--display); font-style: italic; font-weight: 500;
+  font-size: 1.5rem; color: var(--ink); margin-bottom: 26px;
+}
+.af-centered-wrap div[data-testid="stForm"] {
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--surface); padding: 6px 8px 6px 22px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.af-centered-wrap div[data-testid="stForm"]:hover,
+.af-centered-wrap div[data-testid="stForm"]:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(63,168,140,0.28);
+}
+.af-centered-wrap div[data-testid="stForm"] input {
+  background: transparent !important; border: none !important;
+  font-family: var(--body) !important; font-size: 0.95rem !important;
+}
+.af-centered-wrap .stButton > button {
+  border-radius: 999px; padding: 6px 18px;
+}
+.af-centered-examples { margin-top: 22px; }
+
+/* ── Live status (blinking evidence pulse, mandatory during a query) ── */
+
+.af-live-status {
+  display: flex; align-items: center; gap: 11px;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft);
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 13px 18px; margin: 14px 0;
+}
+.af-pulse-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  flex-shrink: 0; animation: af-pulse 1.1s ease-in-out infinite;
+}
+@keyframes af-pulse {
+  0%, 100% { opacity: 1;  box-shadow: 0 0 0 0 rgba(63,168,140,.5); }
+  50%      { opacity: .4; box-shadow: 0 0 0 6px rgba(63,168,140,0); }
+}
+
+/* ── Metrics values: slightly smaller so the section reads as a strip,
+   not a competing headline next to the chat below it ─────────────────*/
+
+div[data-testid="stMetricValue"] { font-size: 1.35rem; }
+
+@media (max-width: 900px) {
+  .af-centered-wrap { margin: 32px auto 20px; }
+}

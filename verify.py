@@ -168,7 +168,7 @@ import config, store, retriever, llm, query, ingest, report_generator
 
 check("store.COLLECTION_NAME == config.COLLECTION_NAME",
       store.COLLECTION_NAME == config.COLLECTION_NAME)
-check("config.SNIPPET_CHARS == 1500", config.SNIPPET_CHARS == 1500)
+check("config.SNIPPET_CHARS == 400", config.SNIPPET_CHARS == 400)
 check("config.MAX_RECORDS == 50000", config.MAX_RECORDS == 50_000)
 check("config.REPORT_MAX_TURNS == 20", config.REPORT_MAX_TURNS == 20)
 check("config.REPORT_NUM_CTX == 16384", config.REPORT_NUM_CTX == 16384)

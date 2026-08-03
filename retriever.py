@@ -16,7 +16,7 @@ Changes from original
 • Forensic relevance gate tightened: now requires >= 2 keyword matches (was 1).
   Generic question words (when, who, was, how, did, found, where, which, what)
   removed from the keyword set — they trivially matched any question before.
-• Context snippet limit raised from 300 → 800 chars.
+• Context snippet limit raised from 300 → 400 chars.
   NOTE: this reduces the risk of truncating critical EventData fields but does
   NOT eliminate it for very long payloads.  Known limitation — documented
   intentionally in this file and in the report.
@@ -397,7 +397,7 @@ def build_context_and_sources(fused_ids, payloads_map):
 
     Snippet truncation
     ------------------
-    chunk_text is clipped to SNIPPET_CHARS (1500 chars from config.py).
+    chunk_text is clipped to SNIPPET_CHARS (400 chars from config.py).
     Full chunk_text is always in the Qdrant payload for post-hoc inspection.
 
     Inputs

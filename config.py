@@ -44,7 +44,7 @@ SPARSE_TOP_K     = 20     # BM25 keyword results per query
 RRF_K            = 60     # RRF constant (standard default)
 RRF_TOP_N        = 3      # Final fused results sent to LLM
 SNIPPET_CHARS    = 400    # Max chars of chunk_text sent to LLM as evidence.
-                          # 5 sources × 800 chars ≈ ~1,000 tokens of evidence —
+                          # 3 sources × 400 chars ≈ ~1,000 tokens of evidence —
                           # prompt eval is often the bigger CPU cost than generation,
                           # so halving snippet size directly cuts prompt processing time.
 
@@ -83,6 +83,7 @@ _BASE_DIR        = os.path.dirname(_CODE_DIR)
 
 INPUT_DIR        = os.path.join(_BASE_DIR, "sample_data")   # raw artifacts
 OUTPUT_DIR       = os.path.join(_BASE_DIR, "output")        # parsed JSON + reports
+SESSIONS_DIR     = os.path.join(_BASE_DIR, "sessions")       # persisted investigation chat histories
 BM25_CACHE       = os.path.join(_CODE_DIR, "bm25_cache.pkl")
 EMBED_CHECKPOINT = os.path.join(_CODE_DIR, "embed_checkpoint.pkl")
 # Cleared automatically by ingest.py after a successful Qdrant upsert.

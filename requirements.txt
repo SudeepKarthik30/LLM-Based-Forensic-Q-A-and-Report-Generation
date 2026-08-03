@@ -28,6 +28,11 @@ rank-bm25==0.2.2           # BM25 sparse retrieval (pure Python, no extra deps)
 fpdf2==2.8.3               # PDF export for Phase 4 report (pure Python, no external binaries)
 # Note: concurrent.futures (used by embed_batch) is stdlib — no pip install needed
 
+# ── Phase 3: Streamlit dashboard ──────────────────────────────────────────────
+streamlit==1.45.1          # Web UI — run with: streamlit run app.py
+requests==2.32.5           # Direct REST calls to hosted LLM providers (Anthropic/OpenAI) when
+                           # no local Qdrant/Ollama backend is connected — see app.py
+
 # ── Transitive dependencies (pinned for reproducibility) ──────────────────────
 annotated-types==0.7.0
 anyio==4.13.0

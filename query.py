@@ -213,7 +213,7 @@ def banner():
 # QUERY PIPELINE
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_query(question, client, bm25, corpus_tokens, chunk_ids, payloads_map, chat_history):
+def run_query(question, client, bm25, corpus_tokens, chunk_ids, payloads_map, chat_history, filter_params=None):
     """
     Runs the complete RAG pipeline for one user question and prints the result.
 
@@ -276,7 +276,7 @@ def run_query(question, client, bm25, corpus_tokens, chunk_ids, payloads_map, ch
 
     # ── Step 2: Dense retrieval ───────────────────────────────────────────────
     step(2, f"Dense retrieval  (Qdrant cosine similarity, top-{DENSE_TOP_K})")
-    dense_results = dense_search(client, question, top_k=DENSE_TOP_K)
+    dense_results = dense_search(client, question, top_k=DENSE_TOP_K, filter_params=filter_params)
     ok(f"{len(dense_results)} results")
 
     # ── Step 3: Sparse retrieval ───────────────────────────────────────────────

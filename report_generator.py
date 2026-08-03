@@ -199,8 +199,27 @@ def _get_inventory_rows(chat_history):
 # PDF EXPORT  (fpdf2 — pure Python, no external binaries required)
 # ─────────────────────────────────────────────────────────────────────────────
 
+_UNICODE_REPLACEMENTS = {
+    "\u2022": "-",   # • bullet
+    "\u2023": "-",   # triangular bullet
+    "\u25e6": "-",   # white bullet
+    "\u2013": "-",   # – en dash
+    "\u2014": "--",  # — em dash
+    "\u2018": "'",   # ' left single quote
+    "\u2019": "'",   # ' right single quote
+    "\u201c": '"',   # " left double quote
+    "\u201d": '"',   # " right double quote
+    "\u2026": "...", # … ellipsis
+}
+
+
 def _safe(text):
-    """Strip non-latin-1 characters that fpdf2 core fonts can't encode."""
+    """Normalize common Unicode punctuation (bullets, smart quotes, dashes)
+    to ASCII equivalents, then strip any remaining non-latin-1 characters
+    that fpdf2 core fonts can't encode (falls back to '?' only as a last
+    resort for truly unmappable characters, e.g. CJK or emoji)."""
+    for uni, ascii_equiv in _UNICODE_REPLACEMENTS.items():
+        text = text.replace(uni, ascii_equiv)
     return text.encode("latin-1", errors="replace").decode("latin-1")
 
 
@@ -263,7 +282,7 @@ def _save_as_pdf(pdf_path, now_str, original_count, unique_files,
             pdf.set_text_color(180, 60, 0)
             clean_warn = (cap_warning.replace("> ", "").replace("**", "")
                           .replace("\n", " ").strip())
-            pdf.multi_cell(W, 5, _safe(clean_warn[:300]))
+            pdf.multi_cell(W, 5, _safe(clean_warn[:300]), new_x="LMARGIN", new_y="NEXT")
             pdf.set_text_color(0, 0, 0)
             pdf.ln(2)
 
@@ -280,11 +299,11 @@ def _save_as_pdf(pdf_path, now_str, original_count, unique_files,
                 continue
             if stripped.isupper() or stripped.startswith("##") or stripped.startswith("**"):
                 pdf.set_font("Helvetica", "B", 11)
-                clean = stripped.lstrip("#").lstrip("*").strip()
-                pdf.multi_cell(W, 7, _safe(clean))
+                clean = stripped.strip("#").strip("*").strip()
+                pdf.multi_cell(W, 7, _safe(clean), new_x="LMARGIN", new_y="NEXT")
                 pdf.set_font("Helvetica", "", 10)
             else:
-                pdf.multi_cell(W, 5, _safe(stripped))
+                pdf.multi_cell(W, 5, _safe(stripped), new_x="LMARGIN", new_y="NEXT")
 
         # ── Page 3: Evidence Inventory table ─────────────────────────────────
         pdf.add_page()
@@ -345,9 +364,13 @@ def _save_as_pdf(pdf_path, now_str, original_count, unique_files,
             a = turn.get("answer",   "")
 
             pdf.set_font("Helvetica", "B", 10)
-            pdf.multi_cell(W, 6, _safe(f"Q{i}: {q}"))
+            pdf.multi_cell(W, 6, _safe(f"Q{i}: {q}"), new_x="LMARGIN", new_y="NEXT")
             pdf.set_font("Helvetica", "", 9)
-            pdf.multi_cell(W, 5, _safe(a[:1200]))
+            # NOTE: previously this was a[:1200], which hard-truncated any
+            # answer over 1200 chars mid-word/mid-sentence. Confirmed via
+            # isolated testing that fpdf2's multi_cell auto-paginates long
+            # text cleanly across pages on its own — no cap needed at all.
+            pdf.multi_cell(W, 5, _safe(a), new_x="LMARGIN", new_y="NEXT")
             pdf.ln(3)
             pdf.set_draw_color(180, 180, 180)
             pdf.line(pdf.l_margin, pdf.get_y(), pdf.l_margin + W, pdf.get_y())
