@@ -248,12 +248,3 @@ These are documented in the code, not hidden:
 - End-to-end `run_query` with mocked retrieval and LLM calls
 
 `timed_test.py` is a separate, non-interactive harness for measuring retrieval and generation latency across repeated and varied queries — useful for isolating model-reload overhead from actual inference time.
-
----
-
-
----
-
-## Author
-
-Karthik Thirumalasetty — B.Tech CSE, IIIT Manipur  
